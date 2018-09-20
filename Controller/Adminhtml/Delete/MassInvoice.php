@@ -55,21 +55,10 @@ class MassInvoice extends \Magento\Sales\Controller\Adminhtml\Order\AbstractMass
 	{
         $params = $this->getRequest()->getParams();
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $invoicesCollections = $this->_invoiceCollectionFactory->create();
-        $selected = array();
-		if(isset($params['excluded']) && $params['excluded'] == "false"){
-			if($params['namespace'] == 'sales_order_view_invoice_grid'){
-				$_order = $objectManager->create('Magento\Sales\Model\Order')->load($params['order_id']);
-		        foreach ($_order->getInvoiceCollection() as $_invoice) {
-		            if($_invoice) array_push($selected, $_invoice->getId());
-		        }
-			}else{
-	        	foreach ($invoicesCollections as $invoicesCollection){
-	        		if($invoicesCollection) array_push($selected, $invoicesCollection->getId());
-	        	}
-	        }
-        }else{
-        	$selected = $params['selected'];
+        $selected = [];
+        $collectionInvoice = $this->filter->getCollection($this->_invoiceCollectionFactory->create());
+        foreach ($collectionInvoice as $invoice) {
+            array_push($selected, $invoice->getId());
         }
         if($selected){
             foreach ($selected as $invoiceId) {

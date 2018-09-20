@@ -53,25 +53,13 @@ class MassShipment extends \Magento\Sales\Controller\Adminhtml\Order\AbstractMas
 
 	protected function massAction(AbstractCollection $collection)
 	{
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
         $params = $this->getRequest()->getParams();
-        $shipmentCollections = $this->_shipmentCollectionFactory->create();
-		$selected = array();
-		if(isset($params['excluded']) && $params['excluded'] == "false"){
-        	if($params['namespace'] == 'sales_order_view_shipment_grid'){
-				$_order = $objectManager->create('Magento\Sales\Model\Order')->load($params['order_id']);
-		        foreach ($_order->getShipmentsCollection() as $_shipment) {
-		            if($_shipment) 
-		            	array_push($selected, $_shipment->getId());
-		        }
-			}else{
-	        	foreach ($shipmentCollections as $shipmentCollection){
-	        		if($shipmentCollection) 
-	        			array_push($selected, $shipmentCollection->getId());
-	        	}
-	        }
-        }else{
-        	$selected = $params['selected'];
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $selected = [];
+        $collectionShipment = $this->filter->getCollection($this->_shipmentCollectionFactory->create());
+        foreach ($collectionShipment as $shipment) {
+            array_push($selected, $shipment->getId());
         }
         if($selected){
             foreach ($selected as $shipmentId) {

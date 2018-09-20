@@ -37,21 +37,27 @@ class MassOrder extends \Magento\Sales\Controller\Adminhtml\Order\AbstractMassAc
 {
 	protected $orderManagement;
 
+	protected $orderCollectionFactory;
+
 	public function __construct(
 		Context $context,
 		Filter $filter,
 		CollectionFactory $collectionFactory,
-		OrderManagementInterface $orderManagement
+		OrderManagementInterface $orderManagement,
+        \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory
 		) {
 		parent::__construct($context, $filter);
 		$this->collectionFactory = $collectionFactory;
 		$this->orderManagement = $orderManagement;
+		$this->orderCollectionFactory = $orderCollectionFactory;
 	}
 
 	protected function massAction(AbstractCollection $collection)
 	{
 		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-		foreach ($collection->getItems() as $order) {
+        $collectionInvoice = $this->filter->getCollection($this->orderCollectionFactory->create());
+
+		foreach ($collectionInvoice as $order) {
 			$orderId = $order->getId();
 			$incrementId = $order->getIncrementId();
 			try {
