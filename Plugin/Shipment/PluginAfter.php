@@ -29,21 +29,33 @@ namespace Bss\DeleteOrder\Plugin\Shipment;
 
 class PluginAfter extends \Bss\DeleteOrder\Plugin\PluginAbstract
 {
-    public function afterGetBackUrl(\Magento\Shipping\Block\Adminhtml\View $subject, $result){
+    /**
+     * @param \Magento\Shipping\Block\Adminhtml\View $subject
+     * @param $result
+     * @return mixed
+     */
+    public function afterGetBackUrl(\Magento\Shipping\Block\Adminhtml\View $subject, $result)
+    {
         if($this->getAllowedResources())
         {
             $params = $subject->getRequest()->getParams();
             $message = __('Are you sure you want to do this?');
-            $subject->addButton(
+            if ($subject->getRequest()->getFullActionName() == 'adminhtml_order_shipment_view') {
+                $subject->addButton(
                     'bss-delete',
                     ['label' => __('Delete'), 'onclick' => 'confirmSetLocation(\'' . $message . '\',\'' . $this->getDeleteUrl($params['shipment_id']) . '\')', 'class' => 'bss-delete'],
                     -1
                 );
+            }
         }
 
         return $result;
     }
 
+    /**
+     * @param string $shipmentId
+     * @return mixed
+     */
     public function getDeleteUrl($shipmentId)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();

@@ -29,22 +29,32 @@ namespace Bss\DeleteOrder\Plugin\Order;
 
 class PluginAfter extends \Bss\DeleteOrder\Plugin\PluginAbstract
 {
-
-    public function afterGetBackUrl(\Magento\Sales\Block\Adminhtml\Order\View $subject, $result){
+    /**
+     * @param \Magento\Sales\Block\Adminhtml\Order\View $subject
+     * @param $result
+     * @return mixed
+     */
+    public function afterGetBackUrl(\Magento\Sales\Block\Adminhtml\Order\View $subject, $result)
+    {
         if($this->getAllowedResources())
         {
             $params = $subject->getRequest()->getParams();
             $message = __('Are you sure you want to do this?');
-            $subject->addButton(
+            if ($subject->getRequest()->getFullActionName() == 'sales_order_view') {
+                $subject->addButton(
                     'bss-delete',
                     ['label' => __('Delete'), 'onclick' => 'confirmSetLocation(\'' . $message . '\',\'' . $this->getDeleteUrl($params['order_id']) . '\')', 'class' => 'bss-delete'],
                     -1
                 );
+            }
         }
-
         return $result;
     }
 
+    /**
+     * @param string $orderId
+     * @return mixed
+     */
     public function getDeleteUrl($orderId)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();

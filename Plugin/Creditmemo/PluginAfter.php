@@ -29,21 +29,33 @@ namespace Bss\DeleteOrder\Plugin\Creditmemo;
 
 class PluginAfter extends \Bss\DeleteOrder\Plugin\PluginAbstract
 {
-    public function afterGetBackUrl(\Magento\Sales\Block\Adminhtml\Order\Creditmemo\View $subject, $result){
+    /**
+     * @param \Magento\Sales\Block\Adminhtml\Order\Creditmemo\View $subject
+     * @param $result
+     * @return mixed
+     */
+    public function afterGetBackUrl(\Magento\Sales\Block\Adminhtml\Order\Creditmemo\View $subject, $result)
+    {
         if($this->getAllowedResources())
         {
             $params = $subject->getRequest()->getParams();
             $message = __('Are you sure you want to do this?');
-            $subject->addButton(
+            if ($subject->getRequest()->getFullActionName() == 'sales_order_creditmemo_view') {
+                $subject->addButton(
                     'bss-delete',
                     ['label' => __('Delete'), 'onclick' => 'confirmSetLocation(\'' . $message . '\',\'' . $this->getDeleteUrl($params['creditmemo_id']) . '\')', 'class' => 'bss-delete'],
                     -1
                 );
+            }
         }
 
         return $result;
     }
 
+    /**
+     * @param string $creditmemoId
+     * @return mixed
+     */
     public function getDeleteUrl($creditmemoId)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
