@@ -57,12 +57,14 @@ class MassInvoice extends \Magento\Sales\Controller\Adminhtml\Order\AbstractMass
     public function __construct(
         Context $context,
         Filter $filter,
+        CollectionFactory $collectionFactory,
         OrderManagementInterface $orderManagement,
         \Magento\Sales\Model\ResourceModel\Order\Invoice\CollectionFactory $invoiceCollectionFactory,
         \Magento\Sales\Api\InvoiceRepositoryInterface $invoiceRepository,
         \Bss\DeleteOrder\Model\Invoice\Delete $delete
     ) {
         parent::__construct($context, $filter);
+        $this->collectionFactory = $collectionFactory;
         $this->orderManagement = $orderManagement;
         $this->invoiceCollectionFactory = $invoiceCollectionFactory;
         $this->invoiceRepository = $invoiceRepository;

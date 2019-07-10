@@ -51,11 +51,13 @@ class MassOrder extends \Magento\Sales\Controller\Adminhtml\Order\AbstractMassAc
     public function __construct(
         Context $context,
         Filter $filter,
+        CollectionFactory $collectionFactory,
         OrderManagementInterface $orderManagement,
         \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory,
         \Bss\DeleteOrder\Model\Order\Delete $delete
     ) {
         parent::__construct($context, $filter);
+        $this->collectionFactory = $collectionFactory;
         $this->orderManagement = $orderManagement;
         $this->orderCollectionFactory = $orderCollectionFactory;
         $this->delete = $delete;

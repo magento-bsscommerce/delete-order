@@ -57,12 +57,14 @@ class MassCreditmemo extends \Magento\Sales\Controller\Adminhtml\Order\AbstractM
     public function __construct(
         Context $context,
         Filter $filter,
+        CollectionFactory $collectionFactory,
         OrderManagementInterface $orderManagement,
         \Magento\Sales\Model\ResourceModel\Order\Creditmemo\CollectionFactory $memoCollectionFactory,
         \Magento\Sales\Api\CreditmemoRepositoryInterface $creditmemoRepository,
         \Bss\DeleteOrder\Model\Creditmemo\Delete $delete
     ) {
         parent::__construct($context, $filter);
+        $this->collectionFactory = $collectionFactory;
         $this->orderManagement = $orderManagement;
         $this->memoCollectionFactory = $memoCollectionFactory;
         $this->creditmemoRepository = $creditmemoRepository;

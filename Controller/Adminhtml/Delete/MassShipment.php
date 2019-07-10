@@ -19,6 +19,7 @@ namespace Bss\DeleteOrder\Controller\Adminhtml\Delete;
 
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 use Magento\Backend\App\Action\Context;
+use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Ui\Component\MassAction\Filter;
 use Magento\Sales\Api\OrderManagementInterface;
 
@@ -56,12 +57,14 @@ class MassShipment extends \Magento\Sales\Controller\Adminhtml\Order\AbstractMas
     public function __construct(
         Context $context,
         Filter $filter,
+        CollectionFactory $collectionFactory,
         OrderManagementInterface $orderManagement,
         \Magento\Sales\Model\ResourceModel\Order\Shipment\CollectionFactory $shipmentCollectionFactory,
         \Magento\Sales\Model\Order\Shipment $shipment,
         \Bss\DeleteOrder\Model\Shipment\Delete $delete
     ) {
         parent::__construct($context, $filter);
+        $this->collectionFactory = $collectionFactory;
         $this->orderManagement = $orderManagement;
         $this->shipmentCollectionFactory = $shipmentCollectionFactory;
         $this->shipment = $shipment;
