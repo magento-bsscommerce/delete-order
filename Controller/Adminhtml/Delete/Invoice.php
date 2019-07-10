@@ -1,48 +1,68 @@
 <?php
 /**
-* BSS Commerce Co.
-*
-* NOTICE OF LICENSE
-*
-* This source file is subject to the EULA
-* that is bundled with this package in the file LICENSE.txt.
-* It is also available through the world-wide-web at this URL:
-* http://bsscommerce.com/Bss-Commerce-License.txt
-*
-* =================================================================
-*                 MAGENTO EDITION USAGE NOTICE
-* =================================================================
-* This package designed for Magento COMMUNITY edition
-* BSS Commerce does not guarantee correct work of this extension
-* on any other Magento edition except Magento COMMUNITY edition.
-* BSS Commerce does not provide extension support in case of
-* incorrect edition usage.
-* =================================================================
-*
-* @category   BSS
-* @package    Bss_DeleteOrder
-* @author     Extension Team
-* @copyright  Copyright (c) 2015-2016 BSS Commerce Co. ( http://bsscommerce.com )
-* @license    http://bsscommerce.com/Bss-Commerce-License.txt
-*/
+ * BSS Commerce Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://bsscommerce.com/Bss-Commerce-License.txt
+ *
+ * @category   BSS
+ * @package    Bss_DeleteOrder
+ * @author     Extension Team
+ * @copyright  Copyright (c) 2019-2019 BSS Commerce Co. ( http://bsscommerce.com )
+ * @license    http://bsscommerce.com/Bss-Commerce-License.txt
+ */
 namespace Bss\DeleteOrder\Controller\Adminhtml\Delete;
+
+use Magento\Backend\App\Action;
 
 class Invoice extends \Magento\Backend\App\Action
 {
-	public function execute()
+    /**
+     * @var \Magento\Sales\Api\InvoiceRepositoryInterface
+     */
+    protected $invoiceRepository;
+
+    /**
+     * @var \Bss\DeleteOrder\Model\Invoice\Delete
+     */
+    protected $delete;
+
+    /**
+     * Invoice constructor.
+     * @param Action\Context $context
+     * @param \Magento\Sales\Api\InvoiceRepositoryInterface $invoiceRepository
+     * @param \Bss\DeleteOrder\Model\Invoice\Delete $delete
+     */
+    public function __construct(
+        Action\Context $context,
+        \Magento\Sales\Api\InvoiceRepositoryInterface $invoiceRepository,
+        \Bss\DeleteOrder\Model\Invoice\Delete $delete
+    ) {
+        $this->invoiceRepository = $invoiceRepository;
+        $this->delete = $delete;
+        parent::__construct($context);
+    }
+
+    /**
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Redirect|\Magento\Framework\Controller\ResultInterface
+     */
+    public function execute()
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-    	$invoiceId = $this->getRequest()->getParam('invoice_id');
-    	$invoice = $objectManager->create('Magento\Sales\Api\InvoiceRepositoryInterface')->get($invoiceId);
+        $invoiceId = $this->getRequest()->getParam('invoice_id');
+        $invoice = $this->invoiceRepository->get($invoiceId);
         try {
-			$order = $objectManager->create('Bss\DeleteOrder\Model\Invoice\Delete')->deleteInvoice($invoiceId);
-			$this->messageManager->addSuccess(__('Successfully deleted invoice #%1.', $invoice->getIncrementId()));
-		}catch(\Exception $e) {
-			$this->messageManager->addError(__('Error delete invoice #%1.', $invoice->getIncrementId()));
-		}
-		$resultRedirect = $this->resultRedirectFactory->create();
-		$resultRedirect->setPath('sales/invoice/');
-		return $resultRedirect;
+            $this->delete->deleteInvoice($invoiceId);
+            $this->messageManager->addSuccessMessage(__('Successfully deleted invoice #%1.', $invoice->getIncrementId()));
+        } catch (\Exception $e) {
+            $this->messageManager->addErrorMessage(__('Error delete invoice #%1.', $invoice->getIncrementId()));
+        }
+        $resultRedirect = $this->resultRedirectFactory->create();
+        $resultRedirect->setPath('sales/invoice/');
+        return $resultRedirect;
     }
 
     /*

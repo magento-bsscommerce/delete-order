@@ -1,49 +1,69 @@
 <?php
 /**
-* BSS Commerce Co.
-*
-* NOTICE OF LICENSE
-*
-* This source file is subject to the EULA
-* that is bundled with this package in the file LICENSE.txt.
-* It is also available through the world-wide-web at this URL:
-* http://bsscommerce.com/Bss-Commerce-License.txt
-*
-* =================================================================
-*                 MAGENTO EDITION USAGE NOTICE
-* =================================================================
-* This package designed for Magento COMMUNITY edition
-* BSS Commerce does not guarantee correct work of this extension
-* on any other Magento edition except Magento COMMUNITY edition.
-* BSS Commerce does not provide extension support in case of
-* incorrect edition usage.
-* =================================================================
-*
-* @category   BSS
-* @package    Bss_DeleteOrder
-* @author     Extension Team
-* @copyright  Copyright (c) 2015-2016 BSS Commerce Co. ( http://bsscommerce.com )
-* @license    http://bsscommerce.com/Bss-Commerce-License.txt
-*/
+ * BSS Commerce Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://bsscommerce.com/Bss-Commerce-License.txt
+ *
+ * @category   BSS
+ * @package    Bss_DeleteOrder
+ * @author     Extension Team
+ * @copyright  Copyright (c) 2019-2019 BSS Commerce Co. ( http://bsscommerce.com )
+ * @license    http://bsscommerce.com/Bss-Commerce-License.txt
+ */
 namespace Bss\DeleteOrder\Controller\Adminhtml\Delete;
+
+use Magento\Backend\App\Action;
 
 class Order extends \Magento\Backend\App\Action
 {
-	public function execute()
+    /**
+     * @var \Magento\Sales\Model\Order
+     */
+    protected $order;
+
+    /**
+     * @var \Bss\DeleteOrder\Model\Order\Delete
+     */
+    protected $delete;
+
+    /**
+     * Order constructor.
+     * @param Action\Context $context
+     * @param \Magento\Sales\Model\Order $order
+     * @param \Bss\DeleteOrder\Model\Order\Delete $delete
+     */
+    public function __construct(
+        Action\Context $context,
+        \Magento\Sales\Model\Order $order,
+        \Bss\DeleteOrder\Model\Order\Delete $delete
+    ) {
+        $this->order = $order;
+        $this->delete = $delete;
+        parent::__construct($context);
+    }
+
+    /**
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\Result\Redirect|\Magento\Framework\Controller\ResultInterface
+     */
+    public function execute()
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-    	$orderId = $this->getRequest()->getParam('order_id');
-    	$order = $objectManager->create('Magento\Sales\Model\Order')->load($orderId);
-    	$incrementId = $order->getIncrementId();
+        $orderId = $this->getRequest()->getParam('order_id');
+        $order = $this->order->load($orderId);
+        $incrementId = $order->getIncrementId();
         try {
-			$objectManager->create('Bss\DeleteOrder\Model\Order\Delete')->deleteOrder($orderId);
-			$this->messageManager->addSuccess(__('Successfully deleted order #%1.', $incrementId));
-		}catch(\Exception $e) {
-			$this->messageManager->addError(__('Error delete order #%1.', $incrementId));
-		}
-		$resultRedirect = $this->resultRedirectFactory->create();
-		$resultRedirect->setPath('sales/order/');
-		return $resultRedirect;
+            $this->delete->deleteOrder($orderId);
+            $this->messageManager->addSuccessMessage(__('Successfully deleted order #%1.', $incrementId));
+        } catch (\Exception $e) {
+            $this->messageManager->addErrorMessage(__('Error delete order #%1.', $incrementId));
+        }
+        $resultRedirect = $this->resultRedirectFactory->create();
+        $resultRedirect->setPath('sales/order/');
+        return $resultRedirect;
     }
 
     /*
