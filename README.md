@@ -1,3 +1,5 @@
+# Magento 2 Delete Order Extension by BSS Commmerce
+
 [![License: OSI Approved :: Open Software License 3.0 (OSL-3.0)](https://img.shields.io/badge/License-OSL--3.0-blueviolet.svg)](https://opensource.org/licenses/OSL-3.0)
 [![Magento 2 Compatible](https://img.shields.io/badge/Magento%202-Compatible-brightgreen.svg)](https://www.magento.com/)
 
