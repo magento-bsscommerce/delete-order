@@ -40,7 +40,9 @@ php bin/magento cache:flush
 If you need any assistance with the installation, please feel free to contact our support team.
 
 ## Try It Yourself
-Experience the **Magento 2 Delete Order Extension** in action by exploring our **[[Backend Demo luma](https://delete-order.demom2.bsscommerce.com/admin/sales/order/index/key/0eb5d7d124764507b48bb25d20bf784edc75847442a86fac1872114eb5eca182/)]** | **[[Frontend Demo Luma](https://delete-order.demom2.bsscommerce.com/)]**.
+Experience the **Magento 2 Delete Order Extension** in action by exploring our demo
+
+**[[Backend Demo luma](https://delete-order.demom2.bsscommerce.com/admin/sales/order/index/key/0eb5d7d124764507b48bb25d20bf784edc75847442a86fac1872114eb5eca182/)]** | **[[Frontend Demo Luma](https://delete-order.demom2.bsscommerce.com/)]**.
 
 ## Frequently Ask Questions
 
