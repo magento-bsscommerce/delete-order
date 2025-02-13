@@ -1,4 +1,4 @@
-# Magento 2 Delete Order Extension by BSS Commmerce
+# Magento 2 Delete Order Extension by BSS Commerce
 
 [![License: OSI Approved :: Open Software License 3.0 (OSL-3.0)](https://img.shields.io/badge/License-OSL--3.0-blueviolet.svg)](https://opensource.org/licenses/OSL-3.0)
 [![Magento 2 Compatible](https://img.shields.io/badge/Magento%202-Compatible-brightgreen.svg)](https://www.magento.com/)
@@ -45,23 +45,26 @@ Experience the **Magento 2 Delete Order Extension** in action by exploring our *
 ## Frequently Ask Questions
 
 **1. How do I delete an order from Magento 2?**
-Magento default does not allow to delete orders from the backend or frontend. So, to remove test orders and invoices, you need to install an extension from a third-party provider. 
+
+Magento does not allow store owners to delete orders from the backend or frontend by default. So, to remove test orders and invoices, you need to install an extension from a third-party provider. 
+Want to learn more? Explore our **[user guide](https://wiki.bsscommerce.com/docs/magento-2-order-management-extension/magento-2-delete-order/user-guide/)** to see how it works!
 
 **2. Can I recover deleted orders?**
+
 No, once an order is deleted, it cannot be recovered. We recommend backing up your database before deleting orders.
 
 **3. Does this extension remove invoices, shipments, and credit memos?**
-Yes, the extension allows you to delete orders along with their related data such as invoices, shipments, and credit memos.
+
+Yes, the extension allows you to delete orders and their related data such as invoices, shipments, and credit memos.
 
 **4. Can I limit who can delete orders?**
+
 Yes, you can configure admin role permissions to restrict access to the delete order functionality.
 
 **5. Will this extension affect my order reports?**
+
 Yes, deleted orders will no longer appear in Magento's order reports.
 
 **6. Is this extension compatible with Magento 2.4.x?**
-Yes, the Magento 2 Delete Orders extension is compatible with Magento 2.3.x and 2.4.x.
 
-
-
-
+Yes, the Magento 2 Delete Orders extension is compatible with Magento 2.3.x and 2.4.x. 
